@@ -71,14 +71,7 @@ const getUserCtrl = async (req, res) => {
     const userId = req.params.id;
     if (userId) {
       const user = await userModel.findOne({ _id: userId });
-      const data = {
-        name: user.name,
-        email: user.email,
-        occupation: user.occupation,
-        profileURL: user.profileURL,
-        countUsed: user.countUsed,
-      };
-      res.status(200).send({ success: true, data: data });
+      res.status(200).send({ success: true, data: user });
     } else {
       res.status(200).send({ success: false, message: "add userId in params" });
     }

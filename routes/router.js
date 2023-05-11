@@ -34,6 +34,8 @@ router.post("/admin/addEmotion", addEmotionCtrl);
 router.delete("/admin/deleteEmotion/:name", deleteEmotionCtrl);
 // update emotion
 router.put("/admin/updateEmotion", updateEmotionController);
+//get user detail
+router.get("/admin/getUser/:id", getUserCtrl);
 // ......ADMIN API......
 
 //........USERS API..........
@@ -67,11 +69,7 @@ router.post("/paymentverification", paymentVerification);
 
 //CHAT API.......
 router.post("/chat", userAuth, chatHandle);
-router.get(
-  "/getAllChats",
-   userAuth,
-  getAllChats
-);
+router.get("/getAllChats", userAuth, getAllChats);
 // CHAT API......
 
 module.exports = router;
