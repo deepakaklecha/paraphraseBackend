@@ -6,6 +6,7 @@ const {
   getAllEmotionsCtrl,
   deleteEmotionCtrl,
   updateEmotionController,
+  adminLogin,
 } = require("../controllers/adminCtrl");
 const { checkout, paymentVerification } = require("../controllers/paymentCtrl");
 const {
@@ -24,6 +25,8 @@ const { chatHandle, getAllChats } = require("../controllers/chatCtrl");
 const router = express.Router();
 
 // ......ADMIN API......
+//admin login
+router.post("/admin/login", adminLogin);
 //get All Users Details
 router.get("/admin/getAllUsers", getAllUsersCtrl);
 //get All Emotions

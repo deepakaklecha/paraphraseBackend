@@ -66,6 +66,9 @@ const userSchema = mongoose.Schema({
   profileURL: {
     type: String,
   },
+  password: {
+    type: String,
+  },
 });
 const userModel = mongoose.model("users", userSchema);
 

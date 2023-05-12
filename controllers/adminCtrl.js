@@ -1,6 +1,29 @@
 const emotionModel = require("../models/emotionModel");
 const userModel = require("../models/userModel");
 
+const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res
+        .status(200)
+        .send({ message: "Admin not found", success: false });
+    }
+    // const isMatch = bcrypt.compare(password, user.password);
+    if (user?.password != password) {
+      return res
+        .status(200)
+        .send({ message: "Invalid email or password", success: false });
+    }
+    // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res.status(200).send({ message: "Login successfull", success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: `error in login ${error.message}` });
+  }
+};
+
 const getAllUsersCtrl = async (req, res) => {
   try {
     const users = await userModel.find({});
@@ -55,7 +78,7 @@ const addEmotionCtrl = async (req, res) => {
 const deleteEmotionCtrl = async (req, res) => {
   try {
     const emotion = await emotionModel.deleteOne({
-      name: (req.params.name).toString(),
+      name: req.params.name.toString(),
     });
     res.status(200).send({
       success: true,
@@ -90,6 +113,7 @@ const updateEmotionController = async (req, res) => {
 };
 
 module.exports = {
+  adminLogin,
   getAllUsersCtrl,
   addEmotionCtrl,
   getAllEmotionsCtrl,
