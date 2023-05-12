@@ -1,5 +1,6 @@
 const emotionModel = require("../models/emotionModel");
 const userModel = require("../models/userModel");
+const jwt = require("jsonwebtoken");
 
 const adminLogin = async (req, res) => {
   try {
@@ -16,8 +17,10 @@ const adminLogin = async (req, res) => {
         .status(200)
         .send({ message: "Invalid email or password", success: false });
     }
-    // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.status(200).send({ message: "Login successfull", success: true });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res
+      .status(200)
+      .send({ message: "Login successfull", success: true, adminToken: token });
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: `error in login ${error.message}` });
