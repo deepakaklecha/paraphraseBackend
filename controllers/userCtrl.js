@@ -344,6 +344,23 @@ async function regeneratePara(data) {
   // return { s };
 }
 
+//upadte or edit user details
+const editUser = async (req, res) => {
+  try {
+    const user = await userModel.findOneAndUpdate(
+      { _id: req.bearerId },
+      req.body
+    );
+    res.status(201).send({
+      success: true,
+      message: "User Profile Updated",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false });
+  }
+};
+
 module.exports = {
   userDetails,
   getUserCtrl,
@@ -355,4 +372,5 @@ module.exports = {
   logoutCtrl,
   countUsed,
   getCurrentUserCtrl,
+  editUser,
 };

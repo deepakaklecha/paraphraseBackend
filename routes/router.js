@@ -20,6 +20,7 @@ const {
   copiedCtrl,
   countUsed,
   getCurrentUserCtrl,
+  editUser,
 } = require("../controllers/userCtrl");
 const { chatHandle, getAllChats } = require("../controllers/chatCtrl");
 const router = express.Router();
@@ -61,6 +62,8 @@ router.post("/regenerateComment", userAuth, regenerateCommentCtrl);
 router.post("/regeneratePara", userAuth, regenerateParaCtrl);
 //get count used
 router.get("/countUsed", userAuth, countUsed);
+//edit user details
+router.post("/editUser", userAuth, editUser);
 // logout
 router.get("/logout", logoutCtrl);
 
