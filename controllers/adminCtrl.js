@@ -115,6 +115,25 @@ const updateEmotionController = async (req, res) => {
   }
 };
 
+//get all counts of user and emotions
+const countUsersEmotions = async (req, res) => {
+  try {
+    const countUsers = await userModel.countDocuments();
+    const countEmotions = await emotionModel.countDocuments();
+    res.status(200).send({
+      success: true,
+      userCounts: countUsers,
+      emotionCounts: countEmotions,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: `Error ${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   adminLogin,
   getAllUsersCtrl,
@@ -122,4 +141,5 @@ module.exports = {
   getAllEmotionsCtrl,
   deleteEmotionCtrl,
   updateEmotionController,
+  countUsersEmotions,
 };

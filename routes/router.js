@@ -7,6 +7,7 @@ const {
   deleteEmotionCtrl,
   updateEmotionController,
   adminLogin,
+  countUsersEmotions,
 } = require("../controllers/adminCtrl");
 const { checkout, paymentVerification } = require("../controllers/paymentCtrl");
 const {
@@ -40,6 +41,8 @@ router.delete("/admin/deleteEmotion/:name", deleteEmotionCtrl);
 router.put("/admin/updateEmotion", updateEmotionController);
 //get user detail
 router.get("/admin/getUser/:id", getUserCtrl);
+//count all user Emotions count
+router.get("/admin/getUserEmotionCount", countUsersEmotions);
 // ......ADMIN API......
 
 //........USERS API..........
