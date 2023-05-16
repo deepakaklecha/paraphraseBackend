@@ -83,6 +83,6 @@ router.get("/getAllChats", userAuth, getAllChats);
 // CHAT API......
 
 router.get("/login", login);
-router.get("/auth/linkedin/callback", callback);
+router.get("/callback", callback);
 
 module.exports = router;

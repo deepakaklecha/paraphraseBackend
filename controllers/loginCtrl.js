@@ -1,45 +1,80 @@
-const request = require("request");
-const client_id = "77i0i6u2hd04ke";
-const client_secret = "0Y8Yh7t1g1XqyMRc";
-const redirect_uri =
-  "https://commention-backend.onrender.com/auth/linkedin/callback";
+const express = require("express");
+const axios = require("axios");
+const querystring = require("querystring");
 
-const login = async (req, res) => {
-  const scope = "r_liteprofile r_emailaddress";
-  const state = "987654321";
+// Parameters for LinkedIn App
+const clientId = "77i0i6u2hd04ke";
+const clientSecret = "0Y8Yh7t1g1XqyMRc";
+const redirectUri = "http://localhost:8000/callback"; // Your redirect URI
 
-  res.redirect(
-    `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}&state=${state}&scope=${scope}`
-  );
+// Create an Express application
+const app = express();
+
+// Define a route for initiating the LinkedIn login process
+const login = (req, res) => {
+  const queryParams = querystring.stringify({
+    response_type: "code",
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    scope: "r_liteprofile r_emailaddress", // Specify the required scope(s) based on your needs
+  });
+
+  const authorizationUrl = `https://www.linkedin.com/oauth/v2/authorization?${queryParams}`;
+  res.redirect(authorizationUrl);
 };
 
-const callback = async (req, res) => {
-  const code = req.query.code;
+// Define the callback route to handle the authorization code exchange
+const callback = (req, res) => {
+  const authorizationCode = req.query.code;
 
-  const options = {
-    url: "https://www.linkedin.com/oauth/v2/accessToken",
-    method: "POST",
+  // Request access token from LinkedIn
+  const requestBody = querystring.stringify({
+    grant_type: "authorization_code",
+    code: authorizationCode,
+    client_id: clientId,
+    client_secret: clientSecret,
+    redirect_uri: redirectUri,
+  });
+
+  const config = {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    form: {
-      grant_type: "authorization_code",
-      code: code,
-      redirect_uri: "https://www.linkedin.com/",
-      client_id: client_id,
-      client_secret: client_secret,
-    },
   };
 
-  request(options, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      const access_token = JSON.parse(body).access_token;
-      // use the access token to make API requests
-      console.log(access_token);
-    } else {
-      // handle error
-    }
-  });
+  axios
+    .post("https://www.linkedin.com/oauth/v2/accessToken", requestBody, config)
+    .then((response) => {
+      const accessToken = response.data.access_token;
+      // Use the access token for authenticated API requests
+      // For example, you can make a request to the user's profile
+      axios
+        .get(
+          "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .then((response) => {
+          const emailData = response.data;
+          const emailAddress = emailData.elements[0]["handle~"].emailAddress;
+
+          // Respond with the email address only
+          res.send(emailAddress);
+        })
+        .catch((error) => {
+          console.error("Error making API request:", error.response.data);
+          res
+            .status(500)
+            .send("An error occurred while making the API request");
+        });
+    })
+    .catch((error) => {
+      console.error("Error getting access token:", error.response.data);
+      res.status(500).send("An error occurred while getting the access token");
+    });
 };
 
 module.exports = {
