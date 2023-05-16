@@ -24,6 +24,7 @@ const {
   editUser,
 } = require("../controllers/userCtrl");
 const { chatHandle, getAllChats } = require("../controllers/chatCtrl");
+const { login, callback } = require("../controllers/loginCtrl");
 const router = express.Router();
 
 // ......ADMIN API......
@@ -80,5 +81,8 @@ router.post("/paymentverification", paymentVerification);
 router.post("/chat", userAuth, chatHandle);
 router.get("/getAllChats", userAuth, getAllChats);
 // CHAT API......
+
+router.get("/login", login);
+router.get("/auth/linkedin/callback", callback);
 
 module.exports = router;
