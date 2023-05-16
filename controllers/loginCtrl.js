@@ -1,6 +1,7 @@
 const client_id = "77i0i6u2hd04ke";
 const client_secret = "0Y8Yh7t1g1XqyMRc";
-const redirect_uri = "http://localhost:8000/auth/linkedin/callback";
+const redirect_uri =
+  "https://commention-backend.onrender.com/auth/linkedin/callback";
 
 const login = async (req, res) => {
   const scope = "r_liteprofile r_emailaddress";
