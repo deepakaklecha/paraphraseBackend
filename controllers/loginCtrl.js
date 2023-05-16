@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const querystring = require("querystring");
+const userModel = require("../models/userModel");
 
 // Parameters for LinkedIn App
 const clientId = "77i0i6u2hd04ke";
