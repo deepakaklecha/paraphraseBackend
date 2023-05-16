@@ -23,7 +23,7 @@ const callback = async (req, res) => {
     form: {
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: redirect_uri,
+      redirect_uri: "https://www.linkedin.com/",
       client_id: client_id,
       client_secret: client_secret,
     },
