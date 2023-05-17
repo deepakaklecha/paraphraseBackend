@@ -5,11 +5,11 @@ const path = require("path");
 const app = express();
 const helmet = require("helmet");
 const cors = require("cors");
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+// app.use(
+//   cors({
+//     origin: "*",
+//   })
+// );
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
