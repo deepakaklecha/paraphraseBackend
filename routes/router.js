@@ -22,6 +22,7 @@ const {
   countUsed,
   getCurrentUserCtrl,
   editUser,
+  verifyReferral,
 } = require("../controllers/userCtrl");
 const { chatHandle, getAllChats } = require("../controllers/chatCtrl");
 const { login, callback } = require("../controllers/loginCtrl");
@@ -68,6 +69,8 @@ router.post("/regeneratePara", userAuth, regenerateParaCtrl);
 router.get("/countUsed", userAuth, countUsed);
 //edit user details
 router.post("/editUser", userAuth, editUser);
+// verify referral id
+router.get("/verifyReferral/:id", verifyReferral);
 // logout
 router.get("/logout", logoutCtrl);
 

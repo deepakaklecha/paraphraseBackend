@@ -124,11 +124,14 @@ const copiedCtrl = async (req, res) => {
 var final = "";
 const commentCtrl = async (req, res) => {
   try {
+    console.log("commentCtrl");
     const { data, drop, length } = req.body;
+    console.log(data, drop, length);
     const userId = req.bearerId;
     // const userId = "6440d8b0e2a9c5366ab8f718";
     // console.log(JSON.stringify(data));
     const ans = await runCompletion(data, drop, length);
+    console.log("run completion completed");
 
     //adding in user database
     const user = await userModel.findOne({ _id: userId });
@@ -209,7 +212,7 @@ const regenerateCommentCtrl = async (req, res) => {
   try {
     const { data, drop, length } = req.body;
     const userId = req.bearerId;
-    //     const userId = "6427ec5cd6a574855196a742";
+    // const userId = "6427ec5cd6a574855196a742";
     // console.log(JSON.stringify(data));
     const ans = await regenerateComment(data, drop, length);
     res.send({ message: `${final}` });
@@ -264,10 +267,12 @@ const openai = new OpenAIApi(configuration);
 
 //comment generate
 async function runCompletion(data, drop, length) {
+  console.log("run completion");
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
+  console.log("openai object created");
 
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
@@ -359,6 +364,32 @@ const editUser = async (req, res) => {
   }
 };
 
+// verify referral code
+const verifyReferral = async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (!id) {
+      return res
+        .status(200)
+        .send({ success: false, message: "Referral id is not valid" });
+    }
+    const user = await userModel.findById({ _id: id });
+    if (!user) {
+      return res
+        .status(200)
+        .send({ success: false, message: "Referral id is not valid" });
+    }
+    return res
+      .status(200)
+      .send({ success: true, message: "Referral id is valid" });
+  } catch (error) {
+    // console.log(error);
+    res
+      .status(500)
+      .send({ success: false, message: "referral id is not valid" });
+  }
+};
+
 module.exports = {
   userDetails,
   getUserCtrl,
@@ -371,4 +402,5 @@ module.exports = {
   countUsed,
   getCurrentUserCtrl,
   editUser,
+  verifyReferral,
 };

@@ -6,7 +6,7 @@ const userModel = require("../models/userModel");
 // Parameters for LinkedIn App
 const clientId = "77i0i6u2hd04ke";
 const clientSecret = "0Y8Yh7t1g1XqyMRc";
-const redirectUri = "http://localhost:8000/callback"; // Your redirect URI
+const redirectUri = "https://www.linkedin.com/"; // Your redirect URI
 
 // Create an Express application
 const app = express();
